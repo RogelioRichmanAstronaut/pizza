@@ -8,7 +8,7 @@ const handler = (req,res) => {
                 maxAge: 60 * 60,
                 sameSite: "strict",
                 path: "/",
-                httpOnly: true,
+                // httpOnly: true,
             })
             );
             res.status(200).json("Succesfull")
