@@ -49,7 +49,7 @@ const Add = ({setClose}) => {
                 img:url,
             }
 
-            await axios.post("http://localhost:3000/api/products", newProduct);
+            await axios.post(process.env.URL_PAGE+"api/products", newProduct);
             setClose(true)
         }catch(err){
             console.log(err)
