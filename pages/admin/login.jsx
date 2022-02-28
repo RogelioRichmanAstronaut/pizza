@@ -3,7 +3,7 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 import styles from "../../styles/Login.module.css"
 
-// const URL_PAGE = process.env.MONGODB_URI
+const URL_PAGE = process.env.URL_PAGE
 
 const Login = () => {
     const [username, setUsername] = useState(null)
@@ -13,7 +13,7 @@ const Login = () => {
 
     const handleClick = async ()=>{
         try{
-            await axios.post(URL_PAGE+"api/login", {
+            await axios.post(URL_PAGE+"/api/login", {
                 username,
                 password,
             })

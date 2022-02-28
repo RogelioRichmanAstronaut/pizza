@@ -8,7 +8,7 @@ import Featured from '../components/Featured'
 import PizzaList from '../components/PizzaList'
 import styles from '../styles/Home.module.css'
 
-
+const URL_PAGE = process.env.URL_PAGE
 
 export default function Home({pizzaList, admin}) {
   const [close, setClose] = useState(true);
@@ -37,7 +37,7 @@ export const getServerSideProps = async (ctx) => {
     admin = true;
   }
 
-  const res = await axios.get("https://pizza.danisando.com/api/products");
+  const res = await axios.get(URL_PAGE+"/api/products");
   return {
     props:{
       pizzaList:res.data,
