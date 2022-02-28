@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { reset } from "../redux/cartSlice";
 import OrderDetail from "../components/OrderDetail";
 
-const URL_PAGE = process.env.URL_PAGE
+
 
 const Cart = () => {
     const cart = useSelector((state)=>state.cart)
@@ -23,7 +23,7 @@ const Cart = () => {
 
     const createOrder = async (data) =>{
         try{
-            const res = await axios.post(URL_PAGE+"/api/orders",data)
+            const res = await axios.post(`${URL_PAGE}/api/orders`,data)
             res.status === 201 && router.push("/orders/"+res.data._id)
             dispatch(reset());
         }catch(err){

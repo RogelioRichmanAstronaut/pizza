@@ -3,7 +3,6 @@ import styles from "../styles/Add.module.css";
 import axios, { Axios } from "axios";
 import { useRouter } from "next/router";
 
-const URL_PAGE = process.env.URL_PAGE
 
 const Add = ({setClose}) => {
     const [file, setFile] = useState(null)
@@ -51,7 +50,7 @@ const Add = ({setClose}) => {
                 img:url,
             }
 
-            await axios.post(URL_PAGE+"/api/products", newProduct);
+            await axios.post(`${URL_PAGE}/api/products`, newProduct);
             setClose(true)
         }catch(err){
             console.log(err)
