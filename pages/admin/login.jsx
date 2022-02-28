@@ -11,7 +11,7 @@ const Login = () => {
 
     const handleClick = async ()=>{
         try{
-            await axios.post(`${URL_PAGE}/api/login`, {
+            await axios.post(`https://pizza.danisando.com/api/login`, {
                 username,
                 password,
             })

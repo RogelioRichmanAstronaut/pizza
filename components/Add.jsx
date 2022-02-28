@@ -50,7 +50,7 @@ const Add = ({setClose}) => {
                 img:url,
             }
 
-            await axios.post(`${URL_PAGE}/api/products`, newProduct);
+            await axios.post(`https://pizza.danisando.com/api/products`, newProduct);
             setClose(true)
         }catch(err){
             console.log(err)

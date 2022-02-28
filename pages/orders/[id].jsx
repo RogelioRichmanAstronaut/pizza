@@ -94,7 +94,7 @@ const Order = ({order}) => {
 }
 
 export const getServerSideProps = async ({ params }) =>{
-    const res = await axios.get(`${URL_PAGE}/api/orders/${params.id}`);
+    const res = await axios.get(`https://pizza.danisando.com/api/orders/${params.id}`);
     return {
         props: { order: res.data },
     }
