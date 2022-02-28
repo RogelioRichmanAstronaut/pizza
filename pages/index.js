@@ -37,7 +37,7 @@ export const getServerSideProps = async (ctx) => {
     admin = true;
   }
 
-  const res = await axios.get(process.env.URL_PAGE+"api/products");
+  const res = await axios.get("https://pizza.danisando.com/api/products");
   return {
     props:{
       pizzaList:res.data,
