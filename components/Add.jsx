@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "../styles/Add.module.css";
-import axios, { Axios } from "axios";
+import axios from "axios";
 import { useRouter } from "next/router";
 
 const Add = ({ setClose }) => {
@@ -10,7 +10,6 @@ const Add = ({ setClose }) => {
   const [prices, setPrices] = useState([]);
   const [extraOptions, setExtraOptions] = useState([]);
   const [extra, setExtra] = useState(null);
-  const URL_PAGE = process.env.URL_PAGE;
 
   const changePrice = (e, index) => {
     const currentPrices = prices;
@@ -50,7 +49,10 @@ const Add = ({ setClose }) => {
         img: url,
       };
 
-      await axios.post(`${URL_PAGE}/api/products`, newProduct);
+      await axios.post(
+        "https://pizzadani.netlify.app/api/products",
+        newProduct
+      );
       setClose(true);
     } catch (err) {
       console.log(err);

@@ -4,27 +4,37 @@ import { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addProduct } from "../../redux/cartSlice";
-const URL_PAGE = process.env.URL_PAGE;
 
 const Product = ({ pizza }) => {
-  const [priceplus, setPriceplus] = useState(0);
+  const [price, setPrice] = useState(pizza.prices[0]);
   const [size, setSize] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [extras, setExtras] = useState([]);
   const dispatch = useDispatch();
 
+  const changePrice = (number) => {
+    setPrice(price + number);
+  };
+
+  const handleSize = (sizeIndex) => {
+    const difference = pizza.prices[sizeIndex] - pizza.prices[size];
+    setSize(sizeIndex);
+    changePrice(difference);
+  };
+
   const handleChange = (e, option) => {
     const checked = e.target.checked;
+
     if (checked) {
-      setPriceplus(priceplus + option.price);
+      changePrice(option.price);
       setExtras((prev) => [...prev, option]);
     } else {
-      setPriceplus(priceplus - option.price);
+      changePrice(-option.price);
       setExtras(extras.filter((extra) => extra._id !== option._id));
     }
   };
-  const reduxClick = () => {
-    const price = priceplus + pizza.prices[size];
+
+  const handleClick = () => {
     dispatch(addProduct({ ...pizza, extras, price, quantity }));
   };
 
@@ -37,20 +47,19 @@ const Product = ({ pizza }) => {
       </div>
       <div className={styles.right}>
         <h1 className={styles.title}>{pizza.title}</h1>
-        <span className={styles.price}>${pizza.prices[size] + priceplus}</span>
+        <span className={styles.price}>${price}</span>
         <p className={styles.desc}>{pizza.desc}</p>
-        <h2 className={styles.choose}>Choose the size</h2>
-
+        <h3 className={styles.choose}>Choose the size</h3>
         <div className={styles.sizes}>
-          <div className={styles.size} onClick={() => setSize(0)}>
+          <div className={styles.size} onClick={() => handleSize(0)}>
             <Image src="/img/size.png" layout="fill" alt="" />
             <span className={styles.number}>Small</span>
           </div>
-          <div className={styles.size} onClick={() => setSize(1)}>
+          <div className={styles.size} onClick={() => handleSize(1)}>
             <Image src="/img/size.png" layout="fill" alt="" />
             <span className={styles.number}>Medium</span>
           </div>
-          <div className={styles.size} onClick={() => setSize(2)}>
+          <div className={styles.size} onClick={() => handleSize(2)}>
             <Image src="/img/size.png" layout="fill" alt="" />
             <span className={styles.number}>Large</span>
           </div>
@@ -58,17 +67,15 @@ const Product = ({ pizza }) => {
         <h3 className={styles.choose}>Choose additional ingredients</h3>
         <div className={styles.ingredients}>
           {pizza.extraOptions.map((option) => (
-            <div key={option._id}>
-              <div className={styles.option}>
-                <input
-                  type="checkbox"
-                  id={option.text}
-                  name={option.text}
-                  className={styles.checkbox}
-                  onChange={(e) => handleChange(e, option)}
-                />
-                <label htmlFor="double">{option.text}</label>
-              </div>
+            <div className={styles.option} key={option._id}>
+              <input
+                type="checkbox"
+                id={option.text}
+                name={option.text}
+                className={styles.checkbox}
+                onChange={(e) => handleChange(e, option)}
+              />
+              <label htmlFor="double">{option.text}</label>
             </div>
           ))}
         </div>
@@ -79,7 +86,7 @@ const Product = ({ pizza }) => {
             defaultValue={1}
             className={styles.quantity}
           />
-          <button className={styles.button} onClick={reduxClick}>
+          <button className={styles.button} onClick={handleClick}>
             Add to Cart
           </button>
         </div>
@@ -89,7 +96,9 @@ const Product = ({ pizza }) => {
 };
 
 export const getServerSideProps = async ({ params }) => {
-  const res = await axios.get(`${URL_PAGE}/api/products/${params.id}`);
+  const res = await axios.get(
+    `https://pizzadani.netlify.app/api/products/${params.id}`
+  );
   return {
     props: {
       pizza: res.data,

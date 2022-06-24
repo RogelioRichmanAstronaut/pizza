@@ -8,11 +8,10 @@ const Login = () => {
   const [password, setPassword] = useState(null);
   const [error, setError] = useState(false);
   const router = useRouter();
-  const URL_PAGE = process.env.URL_PAGE;
 
   const handleClick = async () => {
     try {
-      await axios.post(`${URL_PAGE}/api/login`, {
+      await axios.post("https://pizzadani.netlify.app/api/login", {
         username,
         password,
       });
