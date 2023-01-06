@@ -10,6 +10,7 @@ const Add = ({ setClose }) => {
   const [prices, setPrices] = useState([]);
   const [extraOptions, setExtraOptions] = useState([]);
   const [extra, setExtra] = useState(null);
+  const router = useRouter();
 
   const changePrice = (e, index) => {
     const currentPrices = prices;
@@ -54,6 +55,7 @@ const Add = ({ setClose }) => {
         newProduct
       );
       setClose(true);
+      router.reload(window.location.pathname);
     } catch (err) {
       console.log(err);
     }

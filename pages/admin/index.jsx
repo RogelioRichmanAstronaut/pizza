@@ -1,12 +1,17 @@
 import axios from "axios";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useState } from "react";
+import Add from "../../components/Add";
+import AddButton from "../../components/AddButton";
 import styles from "../../styles/Admin.module.css";
 
-const Index = ({ orders, products }) => {
+const Index = ({ orders, products, admin }) => {
   const [pizzaList, setPizzaList] = useState(products);
   const [orderList, setOrderList] = useState(orders);
   const status = ["preparing", "on the way", "delivered"];
+  const router = useRouter();
+  const [close, setClose] = useState(true);
 
   const handleDelete = async (id) => {
     try {
@@ -35,6 +40,7 @@ const Index = ({ orders, products }) => {
           res.data,
           ...orderList.filter((order) => order._id !== id),
         ]);
+        router.reload(window.location.pathname);
       } catch (err) {
         console.log(err);
       }
@@ -56,6 +62,7 @@ const Index = ({ orders, products }) => {
           res.data,
           ...orderList.filter((order) => order._id !== id),
         ]);
+        router.reload(window.location.pathname);
       } catch (err) {
         console.log(err);
       }
@@ -65,6 +72,8 @@ const Index = ({ orders, products }) => {
   return (
     <div className={styles.container}>
       <div className={styles.item}>
+        {admin && <AddButton setClose={setClose} />}
+        {!close && <Add setClose={setClose} />}
         <h1 className={styles.title}>Products</h1>
         <table className={styles.table}>
           <tbody>
@@ -153,6 +162,11 @@ const Index = ({ orders, products }) => {
 
 export const getServerSideProps = async (ctx) => {
   const myCookie = ctx.req?.cookies || "";
+  let admin = false;
+
+  if (myCookie.token === process.env.TOKEN) {
+    admin = true;
+  }
 
   if (myCookie.token !== process.env.TOKEN) {
     return {
@@ -171,6 +185,7 @@ export const getServerSideProps = async (ctx) => {
     props: {
       orders: orderRes.data,
       products: productRes.data,
+      admin,
     },
   };
 };
