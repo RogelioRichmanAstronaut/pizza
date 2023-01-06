@@ -27,7 +27,7 @@ export default function Home({ pizzaList, admin }) {
 }
 //fetch our data with next js, javascript fech or axios, axios bro
 //axios is an awesome library that you can use ip request's
-export const getServerSideProps = async (ctx) => {
+export const getStaticProps = async (ctx) => {
   const myCookie = ctx.req?.cookies || "";
   let admin = false;
 
@@ -41,5 +41,6 @@ export const getServerSideProps = async (ctx) => {
       pizzaList: res.data,
       admin,
     },
+    revalidate: 10, // In seconds
   };
 };

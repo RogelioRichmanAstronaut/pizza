@@ -118,7 +118,21 @@ const Order = ({ order }) => {
   );
 };
 
-export const getServerSideProps = async ({ params }) => {
+export const getStaticPaths = async () => {
+  // Call an external API endpoint to get posts
+  const res = await axios.get("https://pizzadani.netlify.app/api/orders");
+  const projects = await res.data;
+
+  // Get the paths we want to pre-render based on posts
+  const paths = projects.map((project) => ({
+    params: { id: project._id },
+  }));
+
+  // We'll pre-render only these paths at build time.
+  return { paths, fallback: "blocking" };
+};
+
+export const getStaticProps = async ({ params }) => {
   const res = await axios.get(
     `https://pizzadani.netlify.app/api/orders/${params.id}`
   );
