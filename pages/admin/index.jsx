@@ -73,6 +73,10 @@ const Index = ({ orders, products, admin }) => {
     <div className={styles.container}>
       <div className={styles.item}>
         {admin && <AddButton setClose={setClose} />}
+        <h2 className={styles.title}>
+          when you add or delete a product, it will be reflected in principal
+          page about 5min aprox...(while the static page is generated)
+        </h2>
         {!close && <Add setClose={setClose} />}
         <h1 className={styles.title}>Products</h1>
         <table className={styles.table}>
